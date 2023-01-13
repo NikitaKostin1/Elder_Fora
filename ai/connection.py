@@ -12,12 +12,12 @@ async def get_response(prompt: str) -> str:
 		data = {
 			"prompt": prompt,
 			"temperature": 0.5,
-			"max_tokens": 3400,
+			"max_tokens": 1800,
 			"top_p": 1.0,
 			"frequency_penalty": 0.5,
 			"presence_penalty": 0.0
 		}
-		url = f"{openai.api_url}/v1/engines/text-davinci-002/completions"
+		url = f"{openai.api_url}/v1/engines/text-davinci-003/completions"
 
 		async with session.post(url, json=data, headers=headers) as resp:
 			json_response = await resp.json()
