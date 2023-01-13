@@ -12,7 +12,7 @@ async def get_response(prompt: str) -> str:
 		data = {
 			"prompt": prompt,
 			"temperature": 0.5,
-			"max_tokens": 3800,
+			"max_tokens": 3400,
 			"top_p": 1.0,
 			"frequency_penalty": 0.5,
 			"presence_penalty": 0.0
