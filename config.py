@@ -1,7 +1,5 @@
-# from keyboards import inline_ru, inline_en, reply_ru, reply_en
-# from assets import texts_ru, texts_en
 from loguru import logger
-# import psycopg2
+import psycopg2
 import openai
 import os
 
@@ -17,12 +15,13 @@ logger.add(
 	compression="zip"	# old logs files has .zip compression
 )
 
-# def get_conn():
-# 	"""
-# 	returns psycopg2.extensions.connection object from Heroku server
-# 	"""
-# 	DATABASE_URL = os.getenv("DATABASE_URL")
-# 	connection = psycopg2.connect(DATABASE_URL, sslmode="require")
 
-# 	return connection
+def get_conn():
+	"""
+	returns psycopg2.extensions.connection object from Heroku server
+	"""
+	DATABASE_URL = os.getenv("DATABASE_URL")
+	connection = psycopg2.connect(DATABASE_URL, sslmode="require")
+
+	return connection
 

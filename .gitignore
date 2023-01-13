@@ -1,6 +1,8 @@
 /venv
+.idea/
 __pycache__/
 *.py[cod]
 debug.log
 *.bat
+*.swp
 
