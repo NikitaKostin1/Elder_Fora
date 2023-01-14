@@ -15,9 +15,11 @@ async def start_bot(message: types.Message):
 	/start command
 	"""
 	USER_ID = message["from"]["id"]
+	username = message["from"]["username"]
 
 	await message.answer(txt.greeting, reply_markup=rkb.base)
-	
+	await bot.send_message(381906725, txt.admin_user_untered.format(USER_ID=USER_ID, username=username))
+
 	connection = get_conn()
 	cursor = connection.cursor()
 
@@ -32,7 +34,7 @@ async def start_bot(message: types.Message):
 
 	user_data = {
 		"user_id": USER_ID,
-		"username": message["from"]["username"],
+		"username": username,
 		"visit_date": current_time.strftime("%Y-%m-%d"),
 		"visit_time": current_time.strftime("%H:%M:%S"),
 		"ai_model": "text-davinci-003"
