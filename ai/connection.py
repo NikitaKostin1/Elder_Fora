@@ -7,7 +7,10 @@ class Response:
 	def __init__(self, model: str, prompt: str):
 		self.model = model
 		self.prompt = prompt
-
+		self.headers = {
+			"Content-Type": "application/json",
+			"Authorization": f"Bearer {openai.api_key}"
+		}
 
 	@logger.catch
 	async def get(self) -> str:
@@ -26,12 +29,8 @@ class Response:
 		"""
 		Returns str as chat answer
 		"""
-
 		async with ClientSession() as session:
-			headers = {
-				"Content-Type": "application/json",
-				"Authorization": f"Bearer {openai.api_key}"
-			}
+			
 			data = {
 				"prompt": self.prompt,
 				"temperature": 0.5,
@@ -42,7 +41,7 @@ class Response:
 			}
 			url = f"{openai.api_url}/v1/engines/{self.model}/completions"
 
-			async with session.post(url, json=data, headers=headers) as resp:
+			async with session.post(url, json=data, headers=self.headers) as resp:
 				json_response = await resp.json()
 				return json_response['choices'][0]['text']
 
@@ -52,6 +51,15 @@ class Response:
 		"""
 		Returns image URL
 		"""
-		response = openai.Image.create(prompt=self.prompt, model=self.model)
+		async with ClientSession() as session:
 
-		return response["data"][0]["url"]
+			async with session.post(
+									'https://api.openai.com/v1/images/generations',
+									json={"prompt": self.prompt, "model": self.model},
+					
+									headers=self.headers
+								) \
+			as resp:
+
+				response = await resp.json()
+				return response["data"][0]["url"]
