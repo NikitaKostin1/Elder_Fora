@@ -26,6 +26,7 @@ class Response:
 		"""
 		Returns str as chat answer
 		"""
+
 		async with ClientSession() as session:
 			headers = {
 				"Content-Type": "application/json",

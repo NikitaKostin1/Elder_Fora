@@ -29,7 +29,8 @@ def add_user(connection: extensions.connection, cursor: extensions.cursor, user_
 				{user_data['user_id']},
 				'{user_data['username']}',
 				'{user_data['visit_date']}',
-				'{user_data['visit_time']}'
+				'{user_data['visit_time']}',
+				'{user_data['ai_model']}'
 			);
 		""")
 		connection.commit()
@@ -39,3 +40,36 @@ def add_user(connection: extensions.connection, cursor: extensions.cursor, user_
 		logger.error(e)
 		logger.error(user_data)
 		return False
+
+
+@logger.catch
+def set_ai_model(connection: extensions.connection, cursor: extensions.cursor, USER_ID: int, model: str) -> bool:
+	"""
+	Updates ai_model column by user_id in users table
+	"""
+	try:
+		cursor.execute(f"""
+			UPDATE users SET ai_model = '{model}' WHERE id = {USER_ID};
+		""")
+		connection.commit()
+
+		return True
+	except Exception as e:
+		logger.error(f"{USER_ID}: {e=}")
+		return False
+
+
+@logger.catch
+def get_ai_model(cursor: extensions.cursor, USER_ID: int) -> str:
+	"""
+	Returns ai_model by user_id in users table
+	In error case returns empty str
+	"""
+	try:
+		cursor.execute(f"SELECT ai_model FROM users WHERE id = {USER_ID};")
+		model = cursor.fetchone()[0]
+
+		return model
+	except Exception as e:
+		logger.error(f"{USER_ID}: {e=}")
+		return ""
