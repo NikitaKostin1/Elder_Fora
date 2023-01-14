@@ -41,15 +41,12 @@ async def start_bot(message: types.Message):
 
 
 
-
-
-
-
-
 @logger.catch
 async def general(message: types.Message):
 	USER_ID = message["from"]["id"]
 	prompt = message["text"]
 	
-	response = await AI.get_response(prompt)
-	await util.send_long_message(USER_ID, response)
+
+	response = await AI.Response("image-alpha-001", prompt).get()
+	await bot.send_photo(USER_ID, response)
+	# await util.send_long_message(USER_ID, response)
