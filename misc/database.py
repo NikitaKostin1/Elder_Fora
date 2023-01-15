@@ -7,7 +7,7 @@ from config import logger
 @logger.catch
 def user_exists(cursor: extensions.cursor, USER_ID: int) -> bool:
 	"""
-	Checks if user exists in db by chat_id
+	Checks if user exists in db by user_id
 	Returns True if exist
 	"""
 	cursor.execute(f"SELECT * FROM users WHERE id = {USER_ID};")
@@ -73,3 +73,19 @@ def get_ai_model(cursor: extensions.cursor, USER_ID: int) -> str:
 	except Exception as e:
 		logger.error(f"{USER_ID}: {e=}")
 		return ""
+
+
+
+@logger.catch
+def get_all_users(cursor: extensions.cursor) -> list:
+	"""
+	Returns all rows from users
+	In error case returns empty list
+	"""
+	try:
+		cursor.execute("SELECT * FROM users;")
+		users = cursor.fetchall()
+
+		return users
+	except:
+		return list()
