@@ -37,9 +37,7 @@ async def mailing(message: types.Message):
 	blocked_msgs = 0
 	blocked_users = []
 
-	print(users)
 	for user in users:
-		print(user)
 		user_id = user[0]
 		username = user[1]
 

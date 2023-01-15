@@ -89,6 +89,10 @@ async def answer_chat(USER_ID: int, message: str):
 	"""
 	Sends msg ansmwer to user
 	"""
+	if not message:
+		await bot.send_message(USER_ID, "Слишком сложный запрос ;(")
+		return
+
 	await util.send_long_message(USER_ID, message)
 
 
@@ -97,4 +101,8 @@ async def answer_image(USER_ID: int, url: str):
 	"""
 	Sends image to user by url
 	"""
+	if not url:
+		await bot.send_message(USER_ID, "Слишком сложный запрос ;(")
+		return
+
 	await bot.send_photo(USER_ID, url) #, caption=url
