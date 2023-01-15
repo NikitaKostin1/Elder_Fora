@@ -63,9 +63,9 @@ async def general(message: types.Message):
 	USER_ID = message["from"]["id"]
 	prompt = message["text"]
 
-	options = {
-		"text-davinci-003": answer_chat,
-		"image-alpha-001": answer_image
+	model_options = {
+		"text-davinci-003": {"response": answer_chat, "action": "typing"},
+		"image-alpha-001": {"response": answer_image, "action": "upload_photo"}
 	}
 
 	connection = get_conn()
@@ -80,8 +80,10 @@ async def general(message: types.Message):
 		await message.answer(txt.error_message)
 		return
 
+	await message.answer_chat_action(model_options[ai_model]["action"])
+
 	response = await AI.Response(ai_model, prompt).get()
-	await options[ai_model](USER_ID, response)
+	await model_options[ai_model]["response"](USER_ID, response)
 
 
 @logger.catch
