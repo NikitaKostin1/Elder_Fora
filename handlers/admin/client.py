@@ -6,6 +6,32 @@ from aiogram import types
 
 
 @logger.catch
+async def sent_msg(message: types.Message):
+	try:
+		USER_ID = int(message["text"].split()[1])
+		text = "\n".join(message["text"].split("\n")[1:])
+
+	except:
+		await message.answer(txt.sent_msg_tip)
+		return
+
+	if not text:
+		await message.answer("Передайте текст со следующей строки после id пользователя!")
+		return
+
+	try:
+		await bot.send_message(USER_ID, text)
+	except Exception as e:
+		logger.error(f"{USER_ID}: {e}")
+		await message.answer("Сообщение не было доставлено. Возможно, пользователь заблокировал бота")
+		return
+
+	await message.answer("✅ Сообщение успешно доставлено, пользователь получил следующее:")
+	await message.answer(text)
+
+
+
+@logger.catch
 async def mailing(message: types.Message):
 	"""
 	Send text to everyone in the bot (from users table)
